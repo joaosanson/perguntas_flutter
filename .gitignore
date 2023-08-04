@@ -1,7 +1,7 @@
-./macos
-./linux
-./windows
-./web
+macos/
+linux/
+windows/
+web/
 
 # Miscellaneous
 *.class
