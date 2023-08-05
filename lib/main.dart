@@ -4,46 +4,60 @@ import 'answer.dart';
 
 main() => runApp(const MyApp());
 
-class MyAppState extends State<MyApp> {
-  var _perguntaSelecionada = 0;
+class _MyAppState extends State<MyApp> {
+  var _selectedQuestion = 0;
+  final List<Map<String, Object>> _questions = const [
+    {
+      'question': 'Qual é a sua cor favorita?',
+      'answer': ['Preto', 'Vermelho', 'Verde', 'Branco']
+    },
+    {
+      'question': 'Qual é o seu animal favorito?',
+      'answer': ['Coelho', 'Cobra', 'Elefante', 'Leão']
+    },
+    {
+      'question': 'Qual é a sua linguagem de programação favorita?',
+      'answer': ['Python', 'JavaScript', 'Flutter', 'Java']
+    }
+  ];
 
   void _responder() {
-    setState(() {
-      _perguntaSelecionada++;
-    });
-    debugPrint('debug: $_perguntaSelecionada');
+    if (isThereSelectedQuestion) {
+      setState(() {
+        _selectedQuestion++;
+        debugPrint('debug: $_selectedQuestion');
+      });
+    }
+  }
+
+  bool get isThereSelectedQuestion {
+    return _selectedQuestion < _questions.length;
   }
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, Object>> questions = [
-      {
-        'question': 'Qual é a sua cor favorita?',
-        'answer': ['Preto', 'Vermelho', 'Verde', 'Branco']
-      },
-      {
-        'question': 'Qual é o seu animal favorito?',
-        'answer': ['Coelho', 'Cobra', 'Elefante', 'Leão']
-      },
-      {
-        'question': 'Qual é a sua linguagem de programação favorita?',
-        'answer': ['Python', 'JavaScript', 'Dart', 'Java']
-      }
-    ];
+    List<String> answers = isThereSelectedQuestion
+        ? _questions[_selectedQuestion].cast()['answer']
+        : [];
 
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: const Center(child: Text('Perguntas')),
         ),
-        body: Column(
-          children: [
-            Question(questions[_perguntaSelecionada]['question'].toString()),
-            Answer('Resposta 1', _responder),
-            Answer('Resposta 2', _responder),
-            Answer('Resposta 3', _responder),
-          ],
-        ),
+        body: isThereSelectedQuestion
+            ? Column(
+                children: <Widget>[
+                  Question(
+                      _questions[_selectedQuestion]['question'].toString()),
+                  ...answers.map((t) => Answer(t, _responder)).toList(),
+                ],
+              )
+            : const Center(
+                child: Text(
+                'Sem mais perguntas.',
+                style: TextStyle(fontSize: 28),
+              )),
       ),
     );
   }
@@ -53,7 +67,7 @@ class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
-  MyAppState createState() {
-    return MyAppState();
+  _MyAppState createState() {
+    return _MyAppState();
   }
 }
