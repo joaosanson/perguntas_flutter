@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'question.dart';
-import 'answer.dart';
+import 'result.dart';
+import 'questionnaire.dart';
 
 main() => runApp(const MyApp());
 
-class _MyAppState extends State<MyApp> {
+class MyAppState extends State<MyApp> {
   var _selectedQuestion = 0;
   final List<Map<String, Object>> _questions = const [
     {
@@ -36,29 +36,17 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> answers = isThereSelectedQuestion
-        ? _questions[_selectedQuestion].cast()['answer']
-        : [];
-
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Center(child: Text('Perguntas')),
-        ),
-        body: isThereSelectedQuestion
-            ? Column(
-                children: <Widget>[
-                  Question(
-                      _questions[_selectedQuestion]['question'].toString()),
-                  ...answers.map((t) => Answer(t, _responder)).toList(),
-                ],
-              )
-            : const Center(
-                child: Text(
-                'Sem mais perguntas.',
-                style: TextStyle(fontSize: 28),
-              )),
-      ),
+          appBar: AppBar(
+            title: const Center(child: Text('Perguntas')),
+          ),
+          body: isThereSelectedQuestion
+              ? Questionnaire(
+                  questions: _questions,
+                  selectedQuestion: _selectedQuestion,
+                  responder: _responder)
+              : const Result()),
     );
   }
 }
@@ -67,7 +55,7 @@ class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
-  _MyAppState createState() {
-    return _MyAppState();
+  MyAppState createState() {
+    return MyAppState();
   }
 }
