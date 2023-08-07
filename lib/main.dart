@@ -6,28 +6,45 @@ main() => runApp(const MyApp());
 
 class MyAppState extends State<MyApp> {
   var _selectedQuestion = 0;
+  var _totalScore = 0;
   final List<Map<String, Object>> _questions = const [
     {
       'question': 'Qual é a sua cor favorita?',
-      'answer': ['Preto', 'Vermelho', 'Verde', 'Branco']
+      'answer': [
+        {'text': 'Preto', 'score': 10},
+        {'text': 'Vermelho', 'score': 5},
+        {'text': 'Verde', 'score': 3},
+        {'text': 'Branco', 'score': 1},
+      ]
     },
     {
       'question': 'Qual é o seu animal favorito?',
-      'answer': ['Coelho', 'Cobra', 'Elefante', 'Leão']
+      'answer': [
+        {'text': 'Coelho', 'score': 10},
+        {'text': 'Cobra', 'score': 5},
+        {'text': 'Elefante', 'score': 3},
+        {'text': 'Leão', 'score': 1},
+      ]
     },
     {
       'question': 'Qual é a sua linguagem de programação favorita?',
-      'answer': ['Python', 'JavaScript', 'Flutter', 'Java']
+      'answer': [
+        {'text': 'Flutter', 'score': 10},
+        {'text': 'Python', 'score': 5},
+        {'text': 'JavaScript', 'score': 3},
+        {'text': 'Java', 'score': 1},
+      ]
     }
   ];
 
-  void _responder() {
+  void _answer(int score) {
     if (isThereSelectedQuestion) {
       setState(() {
         _selectedQuestion++;
-        debugPrint('debug: $_selectedQuestion');
+        _totalScore += score;
       });
     }
+    debugPrint('total score: $_totalScore');
   }
 
   bool get isThereSelectedQuestion {
@@ -45,7 +62,7 @@ class MyAppState extends State<MyApp> {
               ? Questionnaire(
                   questions: _questions,
                   selectedQuestion: _selectedQuestion,
-                  responder: _responder)
+                  howMuchAnswer: _answer)
               : const Result()),
     );
   }

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class Answer extends StatelessWidget {
   final String texto;
-  final void Function() onPressed;
-  const Answer(this.texto, this.onPressed, {super.key});
+  final void Function() whenPressed;
+  const Answer(this.texto, this.whenPressed, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +11,7 @@ class Answer extends StatelessWidget {
       width: double.infinity,
       margin: const EdgeInsets.all(5),
       child: ElevatedButton(
-        onPressed: onPressed,
+        onPressed: whenPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.blue, // Background color
         ),

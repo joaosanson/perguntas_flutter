@@ -5,13 +5,13 @@ import 'answer.dart';
 class Questionnaire extends StatelessWidget {
   final List<Map<String, Object>> questions;
   final int selectedQuestion;
-  final void Function() responder;
+  final void Function(int) howMuchAnswer;
 
   const Questionnaire({
     super.key,
     required this.questions,
     required this.selectedQuestion,
-    required this.responder,
+    required this.howMuchAnswer,
   });
 
   bool get isThereSelectedQuestion {
@@ -20,14 +20,19 @@ class Questionnaire extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<String> answers = isThereSelectedQuestion
-        ? questions[selectedQuestion].cast()['answer']
+    List<Map<String, Object>> answers = isThereSelectedQuestion
+        ? questions[selectedQuestion]['answer'] as List<Map<String, Object>>
         : [];
 
     return Column(
       children: <Widget>[
         Question(questions[selectedQuestion]['question'].toString()),
-        ...answers.map((t) => Answer(t, responder)).toList()
+        ...answers.map((answ) {
+          return Answer(
+            answ['text'].toString(),
+            () => howMuchAnswer(int.parse(answ['score'].toString())),
+          );
+        }).toList(),
       ],
     );
   }
