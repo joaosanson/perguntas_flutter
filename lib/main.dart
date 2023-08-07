@@ -47,6 +47,13 @@ class MyAppState extends State<MyApp> {
     debugPrint('total score: $_totalScore');
   }
 
+  void _restartQuestionnaire() {
+    setState(() {
+      _selectedQuestion = 0;
+      _totalScore = 0;
+    });
+  }
+
   bool get isThereSelectedQuestion {
     return _selectedQuestion < _questions.length;
   }
@@ -63,7 +70,9 @@ class MyAppState extends State<MyApp> {
                   questions: _questions,
                   selectedQuestion: _selectedQuestion,
                   howMuchAnswer: _answer)
-              : const Result()),
+              : Result(
+                  score: _totalScore,
+                  whenRestartQuestionnaire: _restartQuestionnaire)),
     );
   }
 }
